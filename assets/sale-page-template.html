@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[TÊN SẢN PHẨM] — [LỜI HỨA CHÍNH]</title>
+<!--
+  KHUNG SALE PAGE — dct-skill-sale-page-builder
+  Cách dùng: đọc references/html-build-guide.md. Thay token ở :root, điền nội dung thật
+  từ dàn ý 16 bước, thay ảnh/link thật, xoá section không dùng. Mobile-first.
+  Mọi chỗ [TRONG NGOẶC VUÔNG] là placeholder cần thay.
+-->
+<style>
+  :root {
+    /* ===== DESIGN TOKENS — chỉnh theo brand ở đây ===== */
+    --brand:        #1a2b4a;   /* màu thương hiệu chủ đạo */
+    --accent:       #e8623d;   /* màu NHẤN — chỉ dùng cho CTA để nút luôn nổi */
+    --accent-dark:  #c94e2c;
+    --bg:           #ffffff;   /* nền chính, sạch sáng */
+    --bg-soft:      #f6f7f9;   /* nền khối xen kẽ */
+    --ink:          #1c2126;   /* chữ chính */
+    --ink-soft:     #55606b;   /* chữ phụ */
+    --line:         #e6e9ee;
+    --radius:       14px;
+    --maxw:         860px;     /* độ rộng đọc tối ưu */
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* thang cỡ chữ mobile-first */
+    --h1: 30px; --h2: 24px; --lead: 18px; --body: 17px;
+  }
+  @media (min-width: 720px){ :root{ --h1: 46px; --h2: 34px; --lead: 21px; --body: 18px; } }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ font-family:var(--font); font-size:var(--body); line-height:1.65; color:var(--ink);
+        background:var(--bg); -webkit-font-smoothing:antialiased; }
+  img{ max-width:100%; height:auto; display:block; }
+  .wrap{ width:100%; max-width:var(--maxw); margin:0 auto; padding:0 20px; }
+  section{ padding:56px 0; }
+  @media (min-width:720px){ section{ padding:80px 0; } }
+  .soft{ background:var(--bg-soft); }
+  h1,h2,h3{ line-height:1.2; color:var(--brand); letter-spacing:-0.01em; }
+  h1{ font-size:var(--h1); font-weight:800; }
+  h2{ font-size:var(--h2); font-weight:800; margin-bottom:18px; }
+  h3{ font-size:20px; font-weight:700; }
+  p{ margin-bottom:16px; color:var(--ink); }
+  .lead{ font-size:var(--lead); color:var(--ink-soft); }
+  .eyebrow{ text-transform:uppercase; letter-spacing:.12em; font-size:13px; font-weight:700;
+            color:var(--accent); margin-bottom:12px; }
+  .center{ text-align:center; }
+
+  /* ===== CTA — nút nổi bật, dùng màu --accent RIÊNG ===== */
+  .cta{ display:inline-block; background:var(--accent); color:#fff; font-weight:800;
+        font-size:19px; padding:18px 34px; border-radius:var(--radius); text-decoration:none;
+        box-shadow:0 8px 22px rgba(232,98,61,.32); transition:transform .15s, background .15s; }
+  .cta:hover{ background:var(--accent-dark); transform:translateY(-2px); }
+  .cta:focus-visible{ outline:3px solid var(--brand); outline-offset:3px; }
+  .cta-note{ font-size:14px; color:var(--ink-soft); margin-top:10px; }
+
+  /* ===== HERO ===== */
+  .hero{ background:linear-gradient(180deg,#fff, var(--bg-soft)); text-align:center; padding-top:48px; }
+  .hero h1{ margin-bottom:16px; }
+  .hero .lead{ max-width:620px; margin:0 auto 26px; }
+  .hero img{ border-radius:var(--radius); margin:32px auto 0; }
+
+  /* ===== lists ===== */
+  .benefits{ list-style:none; display:grid; gap:14px; margin:8px 0 24px; }
+  @media (min-width:720px){ .benefits{ grid-template-columns:1fr 1fr; } }
+  .benefits li{ position:relative; padding-left:34px; }
+  .benefits li::before{ content:"✓"; position:absolute; left:0; top:1px; width:22px; height:22px;
+        background:var(--accent); color:#fff; border-radius:50%; font-size:13px; font-weight:800;
+        display:grid; place-items:center; }
+
+  /* ===== cards / testimonial ===== */
+  .grid{ display:grid; gap:18px; }
+  @media (min-width:720px){ .grid-2{ grid-template-columns:1fr 1fr; } .grid-3{ grid-template-columns:repeat(3,1fr);} }
+  .card{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px; }
+  .tm{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px; }
+  .tm .who{ display:flex; align-items:center; gap:12px; margin-top:14px; }
+  .tm .who img{ width:48px; height:48px; border-radius:50%; object-fit:cover; }
+  .tm .who b{ color:var(--brand); }
+
+  /* ===== offer / price ===== */
+  .offer{ background:var(--brand); color:#fff; border-radius:var(--radius); padding:36px 26px; text-align:center; }
+  .offer h2, .offer h3{ color:#fff; }
+  .offer .old{ text-decoration:line-through; opacity:.6; font-size:20px; }
+  .offer .now{ font-size:44px; font-weight:800; margin:6px 0; }
+  .stack{ list-style:none; text-align:left; max-width:520px; margin:20px auto; display:grid; gap:10px; }
+  .stack li{ display:flex; justify-content:space-between; gap:16px; border-bottom:1px dashed rgba(255,255,255,.25); padding-bottom:8px; }
+  .scarcity{ background:#fff3ec; border:1px solid #f2c3ac; color:var(--accent-dark);
+        border-radius:10px; padding:12px 16px; font-weight:700; display:inline-block; margin-bottom:8px; }
+
+  /* ===== FAQ ===== */
+  details{ border-bottom:1px solid var(--line); padding:16px 0; }
+  summary{ font-weight:700; color:var(--brand); cursor:pointer; list-style:none; font-size:18px; }
+  summary::after{ content:"+"; float:right; color:var(--accent); font-weight:800; }
+  details[open] summary::after{ content:"–"; }
+  details p{ margin-top:12px; color:var(--ink-soft); }
+
+  /* ===== sticky mobile CTA ===== */
+  .sticky{ position:fixed; left:0; right:0; bottom:0; background:#fff; border-top:1px solid var(--line);
+        padding:12px 16px; text-align:center; box-shadow:0 -4px 16px rgba(0,0,0,.06); z-index:50; }
+  .sticky .cta{ width:100%; padding:15px; font-size:18px; }
+  @media (min-width:720px){ .sticky{ display:none; } }
+  body{ padding-bottom:84px; }
+  @media (min-width:720px){ body{ padding-bottom:0; } }
+
+  /* ===== COUNTDOWN — đếm ngược thật, deadline UTC ===== */
+  .countdown{ display:flex; gap:8px; justify-content:center; margin:14px 0 6px; flex-wrap:wrap; }
+  .cd-cell{ background:rgba(26,43,74,.06); border:1px solid var(--line); border-radius:10px;
+        padding:10px 14px; min-width:64px; text-align:center; }
+  .cd-cell b{ font-size:26px; font-weight:800; color:var(--brand); display:block; line-height:1;
+        font-variant-numeric:tabular-nums; }
+  .cd-cell span{ font-size:12px; color:var(--ink-soft); letter-spacing:.05em; text-transform:uppercase; }
+  .cd-note{ text-align:center; font-size:14px; color:var(--ink-soft); margin-top:4px; }
+  .cd-expired{ text-align:center; padding:16px; background:var(--bg-soft); border-radius:10px;
+        color:var(--ink-soft); }
+
+  /* ===== GUARANTEE BADGE — huy chương cam kết ===== */
+  .guarantee-wrap{ display:flex; gap:20px; align-items:center; padding:24px;
+        background:var(--bg-soft); border-radius:var(--radius); border:1px solid var(--line); }
+  .guarantee-badge{ flex:0 0 120px; width:120px; height:120px; border-radius:50%;
+        background:linear-gradient(135deg, var(--accent), var(--accent-dark));
+        color:#fff; display:grid; place-items:center; text-align:center; padding:12px;
+        box-shadow:0 12px 28px rgba(232,98,61,.35); }
+  .guarantee-badge .big{ font-size:28px; font-weight:800; line-height:1; }
+  .guarantee-badge .small{ font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+        margin-top:4px; font-weight:700; }
+  .guarantee-wrap h3{ margin-bottom:6px; }
+  @media (max-width:520px){ .guarantee-wrap{ flex-direction:column; text-align:center; } }
+
+  /* ===== CTA PULSE — chỉ dùng 1 lần / trang ===== */
+  @keyframes cta-pulse{
+    0%,100%{ box-shadow:0 8px 22px rgba(232,98,61,.32); }
+    50%    { box-shadow:0 8px 34px rgba(232,98,61,.60); }
+  }
+  .cta.pulse{ animation: cta-pulse 2s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce){ .cta.pulse{ animation:none; } }
+
+  footer{ text-align:center; color:var(--ink-soft); font-size:14px; padding:32px 20px 48px; }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO · bước 1–2 + CTA#1 + Countdown ============ -->
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">[DÒNG ĐỊNH VỊ / CHO AI]</p>
+    <h1>[TIÊU ĐỀ CHÍNH — lời hứa kết quả cụ thể, hướng về khách]</h1>
+    <p class="lead">[SUB HEADLINE — làm rõ cơ chế / đối tượng / khử rủi ro]</p>
+    <a class="cta" href="#dang-ky">[CTA — vd: Đăng ký giữ chỗ ngay]</a>
+    <p class="cta-note">[trust nhỏ: đã có N người tham gia · hoàn tiền nếu…]</p>
+
+    <!-- countdown chỉ hiện nếu có deadline THẬT — xoá cả block nếu không dùng -->
+    <div class="countdown" id="countdown" data-deadline="2026-12-31T16:59:59Z" hidden>
+      <div class="cd-cell"><b id="cd-d">--</b><span>ngày</span></div>
+      <div class="cd-cell"><b id="cd-h">--</b><span>giờ</span></div>
+      <div class="cd-cell"><b id="cd-m">--</b><span>phút</span></div>
+      <div class="cd-cell"><b id="cd-s">--</b><span>giây</span></div>
+    </div>
+    <p class="cd-note" id="cd-note" hidden>[Ưu đãi đóng khi hết giờ]</p>
+
+    <img src="[ẢNH HERO THẬT]" alt="[mô tả ảnh]" width="820" height="460" loading="eager">
+  </div>
+</header>
+
+<!-- ============ VẤN ĐỀ · bước 3 ============ -->
+<section>
+  <div class="wrap">
+    <h2>[Gọi tên nỗi đau khách đang sống]</h2>
+    <p>[Khoét sâu vấn đề bằng đúng ngôn ngữ khách. Triệu chứng bề mặt → hệ luỵ cảm xúc.]</p>
+    <p>[Chi phí của việc không hành động: 6 tháng/1 năm nữa vẫn thế thì mất gì.]</p>
+  </div>
+</section>
+
+<!-- ============ UY TÍN + CÂU CHUYỆN · bước 4–5 ============ -->
+<section class="soft">
+  <div class="wrap grid grid-2" style="align-items:center;">
+    <img src="[ẢNH TRÍ / NHÂN VẬT THẬT]" alt="[mô tả]" width="480" height="480" style="border-radius:var(--radius)">
+    <div>
+      <p class="eyebrow">Vì sao là tôi</p>
+      <h2>[Tên + một dòng uy tín thật]</h2>
+      <p>[Câu chuyện BEFORE → bước ngoặt → AFTER. "Tôi từng ở đúng chỗ bạn đang đứng…". Chỉ dùng thành tựu THẬT.]</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SẢN PHẨM LÀ GÌ + LỢI ÍCH · bước 8 + 6 ============ -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Giải pháp</p>
+    <h2>[Sản phẩm/khoá học/sự kiện là gì — rõ ràng, gồm những gì]</h2>
+    <p class="lead">[Một câu mô tả trọn vẹn: hình thức, thời lượng, cho ai.]</p>
+    <ul class="benefits">
+      <li>[Lợi ích 1 — tính năng → được gì → nghĩa là gì]</li>
+      <li>[Lợi ích 2]</li>
+      <li>[Lợi ích 3]</li>
+      <li>[Lợi ích 4]</li>
+    </ul>
+    <div class="center"><a class="cta" href="#dang-ky">[CTA]</a></div>
+  </div>
+</section>
+
+<!-- ============ HÌNH DUNG TƯƠNG LAI · bước 7 ============ -->
+<section class="soft">
+  <div class="wrap center">
+    <h2>[Hãy hình dung…]</h2>
+    <p class="lead">[Một cảnh cụ thể, giác quan rõ, về cuộc sống sau khi có sản phẩm — khơi cảm xúc chủ đạo.]</p>
+  </div>
+</section>
+
+<!-- ============ NEO GIÁ TRỊ · bước 9 ============ -->
+<section>
+  <div class="wrap">
+    <h2>[Giá trị thật bạn nhận được]</h2>
+    <p>[Quy đổi kết quả ra tiền/thời gian/cơ hội; so với tự làm hoặc giải pháp khác.]</p>
+  </div>
+</section>
+
+<!-- ============ BẰNG CHỨNG XÃ HỘI · bước 15 + CTA#2 ============ -->
+<section class="soft">
+  <div class="wrap">
+    <h2 class="center">[Người thật, kết quả thật]</h2>
+    <div class="grid grid-2" style="margin-top:24px">
+      <div class="tm">
+        <p>"[Testimonial THẬT — có kết quả cụ thể, chạm đúng phản đối]"</p>
+        <div class="who"><img src="[ẢNH THẬT]" alt=""><span><b>[Tên]</b><br>[nghề/bối cảnh]</span></div>
+      </div>
+      <div class="tm">
+        <p>"[Testimonial THẬT thứ hai]"</p>
+        <div class="who"><img src="[ẢNH THẬT]" alt=""><span><b>[Tên]</b><br>[nghề/bối cảnh]</span></div>
+      </div>
+    </div>
+    <div class="center" style="margin-top:28px"><a class="cta" href="#dang-ky">[CTA]</a></div>
+  </div>
+</section>
+
+<!-- ============ XỬ LÝ PHẢN ĐỐI + LÝ DO MUA · bước 10–11 ============ -->
+<section>
+  <div class="wrap">
+    <h2>[Bạn có thể đang băn khoăn…]</h2>
+    <div class="grid grid-2" style="margin-bottom:8px">
+      <div class="card"><h3>[Phản đối 1]</h3><p>[Thừa nhận → tái khung → bằng chứng → trấn an]</p></div>
+      <div class="card"><h3>[Phản đối 2]</h3><p>[…]</p></div>
+      <div class="card"><h3>[Phản đối 3]</h3><p>[…]</p></div>
+      <div class="card"><h3>[Phản đối 4]</h3><p>[…]</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ƯU ĐÃI: neo giá + bonus + khan hiếm · bước 13–14–12 ============ -->
+<section id="dang-ky">
+  <div class="wrap">
+    <div class="offer">
+      <span class="scarcity">[KHAN HIẾM THẬT — vd: chỉ còn 8/30 suất · đóng cổng 30/07]</span>
+      <h2>[Tên gói / ưu đãi]</h2>
+      <ul class="stack">
+        <li><span>[Thành phần chính]</span><span>[trị giá X]</span></li>
+        <li><span>[Bonus 1]</span><span>[trị giá X]</span></li>
+        <li><span>[Bonus 2]</span><span>[trị giá X]</span></li>
+      </ul>
+      <p class="old">Tổng giá trị: [TỔNG]</p>
+      <div class="now">[GIÁ THẬT]</div>
+      <a class="cta pulse" href="[LINK MUA/ĐĂNG KÝ THẬT]" style="background:#fff;color:var(--accent);box-shadow:0 8px 22px rgba(255,255,255,.25);">[CTA — vd: Tham gia ngay]</a>
+      <p class="cta-note" style="color:rgba(255,255,255,.85)">[cam kết/bảo hành — khử rủi ro]</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BADGE GUARANTEE · bước 11 (risk reversal) ============ -->
+<section>
+  <div class="wrap">
+    <div class="guarantee-wrap">
+      <div class="guarantee-badge">
+        <div>
+          <div class="big">[30]</div>
+          <div class="small">ngày<br>hoàn tiền</div>
+        </div>
+      </div>
+      <div>
+        <h3>[Tên cam kết — vd: Cam kết ra kết quả đầu tiên trong 30 ngày]</h3>
+        <p>[Nội dung cam kết cụ thể: điều kiện gì → hoàn tiền thế nào. KHÔNG mập mờ. Chọn 1 trong 3 mức guarantee ở references/copy-formulas-tri.md.]</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ · bước 10 mở rộng ============ -->
+<section class="soft">
+  <div class="wrap">
+    <h2>Câu hỏi thường gặp</h2>
+    <details><summary>[Câu hỏi 1]</summary><p>[Trả lời]</p></details>
+    <details><summary>[Câu hỏi 2]</summary><p>[Trả lời]</p></details>
+    <details><summary>[Câu hỏi 3]</summary><p>[Trả lời]</p></details>
+  </div>
+</section>
+
+<!-- ============ CTA CUỐI · bước 16 ============ -->
+<section class="center">
+  <div class="wrap">
+    <h2>[Nhắc lại lời hứa cốt lõi]</h2>
+    <p class="lead">[1 câu: giá trị + khử rủi ro + cấp bách]</p>
+    <a class="cta" href="[LINK MUA/ĐĂNG KÝ THẬT]">[CTA]</a>
+    <p class="cta-note">[trust cuối]</p>
+  </div>
+</section>
+
+<footer>© [NĂM] [Dương Cao Trí / thương hiệu]. [chính sách / liên hệ]</footer>
+
+<!-- sticky CTA mobile -->
+<div class="sticky"><a class="cta" href="#dang-ky">[CTA ngắn]</a></div>
+
+<script>
+/* ==========================================================================
+   Countdown đếm ngược THẬT — deadline dạng ISO 8601 UTC ở data-deadline
+   Không reset khi refresh (dùng thời gian tuyệt đối, không localStorage).
+   Cách dùng:
+     1. Sửa attribute data-deadline="YYYY-MM-DDTHH:MM:SSZ" ở #countdown (UTC).
+        VD deadline 23:59 ngày 15/07/2026 giờ VN (UTC+7) = 2026-07-15T16:59:59Z
+     2. Xoá attribute `hidden` ở #countdown và #cd-note để hiện.
+     3. Nếu không có deadline thật → XOÁ CẢ block countdown, đừng để fake.
+   ========================================================================== */
+(function(){
+  var el = document.getElementById('countdown');
+  if(!el) return;
+  var deadline = el.getAttribute('data-deadline');
+  if(!deadline) return;
+  var target = new Date(deadline).getTime();
+  if(isNaN(target)) return;
+
+  var note = document.getElementById('cd-note');
+  el.hidden = false;
+  if(note) note.hidden = false;
+
+  var $d = document.getElementById('cd-d');
+  var $h = document.getElementById('cd-h');
+  var $m = document.getElementById('cd-m');
+  var $s = document.getElementById('cd-s');
+  var pad = function(n){ return String(n).padStart(2,'0'); };
+
+  function tick(){
+    var diff = target - Date.now();
+    if(diff <= 0){
+      el.innerHTML = '<div class="cd-expired">Ưu đãi đã đóng. Đăng ký danh sách chờ đợt sau.</div>';
+      if(note) note.hidden = true;
+      return;
+    }
+    var days = Math.floor(diff / 86400000);
+    var hrs  = Math.floor((diff % 86400000) / 3600000);
+    var mins = Math.floor((diff % 3600000) / 60000);
+    var secs = Math.floor((diff % 60000) / 1000);
+    $d.textContent = pad(days);
+    $h.textContent = pad(hrs);
+    $m.textContent = pad(mins);
+    $s.textContent = pad(secs);
+    setTimeout(tick, 1000);
+  }
+  tick();
+})();
+</script>
+
+</body>
+</html>
