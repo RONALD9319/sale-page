@@ -6,7 +6,7 @@ Skill cho Claude Code. Đưa bạn đi từ **thông tin sản phẩm** đến m
 
 ## Dùng khi nào
 
-- "Viết sale page cho khoá học của tôi"
+- "Viết sale page cho cty của tôi"
 - "Làm landing page bán sản phẩm X"
 - "Dựng trang đăng ký sự kiện"
 - "Trang chốt đơn cho chiến dịch quảng cáo"
